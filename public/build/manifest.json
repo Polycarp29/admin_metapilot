@@ -1,0 +1,45 @@
+{
+  "__plugin-vue_export-helper-DlAUqK2U.js": {
+    "file": "assets/_plugin-vue_export-helper-DlAUqK2U.js",
+    "name": "_plugin-vue_export-helper"
+  },
+  "resources/js/Pages/Admin/Login.vue": {
+    "file": "assets/Login-BoHELICn.js",
+    "name": "Login",
+    "src": "resources/js/Pages/Admin/Login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/Login-ZGI0nh1b.css"
+    ]
+  },
+  "resources/js/Pages/Admin/MasterDashboard.vue": {
+    "file": "assets/MasterDashboard-mxts19ln.js",
+    "name": "MasterDashboard",
+    "src": "resources/js/Pages/Admin/MasterDashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ],
+    "css": [
+      "assets/MasterDashboard-CQ9shfoq.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-ClXqcQPq.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Admin/Login.vue",
+      "resources/js/Pages/Admin/MasterDashboard.vue"
+    ],
+    "css": [
+      "assets/app-B6NNUGgZ.css"
+    ]
+  }
+}
