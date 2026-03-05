@@ -380,7 +380,7 @@ class AdminDashboardController extends Controller
             'engine'  => base_path('../analytics-engine/engine.log'),
             'worker'  => base_path('../analytics-engine/worker.log'),
             'crawler' => $this->getLatestCrawlerLog(),
-            'metapilot' => base_path('../metapilot/storage/logs/larave.log'),
+            'metapilot' => $this->fetchMetapilotLogs(),
         ];
 
         $path = $paths[$resource] ?? $paths['laravel'];
@@ -414,5 +414,17 @@ class AdminDashboardController extends Controller
         });
 
         return $files[0];
+    }
+
+    public function fetchMetapilotLogs(){
+
+        $absolutepath = '/var/www/metapilot/storage/logs/laravel.log';
+
+        if(!$absolutepath){
+            return [];
+        }
+
+        return $absolutepath;
+
     }
 }
