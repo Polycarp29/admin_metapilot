@@ -4,7 +4,7 @@
     "name": "_plugin-vue_export-helper"
   },
   "resources/js/Pages/Admin/Login.vue": {
-    "file": "assets/Login-BoHELICn.js",
+    "file": "assets/Login-DRgJqcum.js",
     "name": "Login",
     "src": "resources/js/Pages/Admin/Login.vue",
     "isDynamicEntry": true,
@@ -17,7 +17,7 @@
     ]
   },
   "resources/js/Pages/Admin/MasterDashboard.vue": {
-    "file": "assets/MasterDashboard-mxts19ln.js",
+    "file": "assets/MasterDashboard-DBffRCYm.js",
     "name": "MasterDashboard",
     "src": "resources/js/Pages/Admin/MasterDashboard.vue",
     "isDynamicEntry": true,
@@ -26,11 +26,11 @@
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
-      "assets/MasterDashboard-CQ9shfoq.css"
+      "assets/MasterDashboard-BeZycFti.css"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-ClXqcQPq.js",
+    "file": "assets/app-DxAFILgI.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -39,7 +39,7 @@
       "resources/js/Pages/Admin/MasterDashboard.vue"
     ],
     "css": [
-      "assets/app-B6NNUGgZ.css"
+      "assets/app-BAjCZURg.css"
     ]
   }
 }
