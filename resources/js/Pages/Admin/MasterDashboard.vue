@@ -822,7 +822,7 @@ onMounted(() => {
             <div v-if="activeTab === 'logs'" class="space-y-8">
                 <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                     <div>
-                        <h3 class="text-2xl font-black text-slate-900 tracking-tight italic uppercase italic">Infrastructure Logs</h3>
+                        <h3 class="text-2xl font-black text-slate-900 tracking-tight italic uppercase">Infrastructure Logs</h3>
                         <p class="text-slate-500 text-[10px] font-bold uppercase mt-1 tracking-widest">Real-time terminal stream from core services</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-4">
@@ -831,6 +831,7 @@ onMounted(() => {
                             <option value="engine">⚙️ Python Intelligence Engine</option>
                             <option value="worker">🏗️ Automation Worker (Redis)</option>
                             <option value="crawler">🕷️ Distributed Spider Node</option>
+                            <option value="metapilot">🤖Metapilot System</option>
                         </select>
                         <button @click="logAutoRefresh = !logAutoRefresh" :class="logAutoRefresh ? 'bg-emerald-600 text-white shadow-emerald-900/20' : 'bg-white text-slate-500 border border-gray-200'" class="px-6 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl transition-all">
                             Live Stream: {{ logAutoRefresh ? 'ACTIVE' : 'IDLE' }}
