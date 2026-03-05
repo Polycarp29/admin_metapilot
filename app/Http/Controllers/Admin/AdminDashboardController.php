@@ -350,6 +350,12 @@ class AdminDashboardController extends Controller
                 'status' => 'Online', // Placeholder
                 'ping' => 'Spider Node',
                 'icon' => '🕷️'
+            ],
+            [
+                'name' => 'Main Site',
+                'status' => 'Online',
+                'ping' => 'Metapilot Service',
+                'icon' => '🤖',
             ]
         ];
 
@@ -371,9 +377,10 @@ class AdminDashboardController extends Controller
         $resource = $request->input('resource', 'laravel');
         $paths = [
             'laravel' => storage_path('logs/laravel.log'),
-            'engine'  => base_path('../../analytics-engine/engine.log'),
-            'worker'  => base_path('../../analytics-engine/worker.log'),
+            'engine'  => base_path('../analytics-engine/engine.log'),
+            'worker'  => base_path('../analytics-engine/worker.log'),
             'crawler' => $this->getLatestCrawlerLog(),
+            'metapilot' => base_path('../metapilot/storage/logs/larave.log'),
         ];
 
         $path = $paths[$resource] ?? $paths['laravel'];
@@ -395,7 +402,7 @@ class AdminDashboardController extends Controller
 
     private function getLatestCrawlerLog()
     {
-        $dir = base_path('../../crawler-service/logs');
+        $dir = base_path('../crawler-service/logs');
         if (!File::isDirectory($dir)) return null;
 
         $files = File::glob($dir . '/*.stderr.log');
