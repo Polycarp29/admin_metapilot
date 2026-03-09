@@ -7,14 +7,19 @@
       <div class="flex flex-col h-full p-8">
         <!-- Brand -->
         <div class="flex items-center space-x-4 mb-12 group">
-          <div class="w-12 h-12 bg-rose-50 border border-rose-100 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-rose-500/30 transition-all">
-            <svg class="w-6 h-6 text-rose-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
+          <div class="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center shadow-sm group-hover:border-rose-500/30 transition-all overflow-hidden">
+            <template v-if="$page.props.branding?.logo">
+              <img :src="$page.props.branding.logo" class="w-full h-full object-contain" :alt="$page.props.branding.name" />
+            </template>
+            <template v-else>
+              <svg class="w-6 h-6 text-rose-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </template>
           </div>
-          <div>
-            <h1 class="text-xl font-black text-slate-900 tracking-tight uppercase">Admin</h1>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">Metapilot Registry</p>
+          <div class="flex-1 min-w-0">
+            <h1 class="text-xl font-black text-slate-900 tracking-tight uppercase truncate">{{ $page.props.branding?.name || 'Admin' }}</h1>
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">Admin Control</p>
           </div>
         </div>
 
@@ -74,10 +79,15 @@
       <!-- Top Bar (Mobile) -->
       <header class="lg:hidden flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-sm">
-                <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <div class="w-10 h-10 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+                <template v-if="$page.props.branding?.logo">
+                    <img :src="$page.props.branding.logo" class="w-full h-full object-contain" :alt="$page.props.branding.name" />
+                </template>
+                <template v-else>
+                    <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </template>
             </div>
-            <h1 class="text-lg font-black text-slate-900 uppercase tracking-tight italic">Admin</h1>
+            <h1 class="text-lg font-black text-slate-900 uppercase tracking-tight italic">{{ $page.props.branding?.name || 'Admin' }}</h1>
         </div>
         <button class="text-slate-500 p-2">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
@@ -86,12 +96,15 @@
 
       <slot />
     </main>
+
+    <Toaster />
   </div>
 </template>
 
 <script setup>
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
+import Toaster from '../Components/Toaster.vue'
 
 const props = defineProps({
   title: String,

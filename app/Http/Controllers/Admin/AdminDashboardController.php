@@ -310,18 +310,38 @@ class AdminDashboardController extends Controller
 
     public function uploadLogo(Request $request)
     {
-        $request->validate([
-            'logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'logo' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            ]);
 
-        if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('branding', 'public');
-            SiteConfig::set('site_logo', asset('storage/' . $path), 'image');
-            
-            return response()->json(['message' => 'Logo uploaded successfully', 'url' => asset('storage/' . $path)]);
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo');
+                $path = $file->store('branding', 'public');
+                
+                if (!$path) {
+                    \Log::error('Logo upload failed: store() returned false');
+                    return response()->json(['error' => 'System failed to store the file.'], 500);
+                }
+
+                SiteConfig::set('site_logo', asset('storage/' . $path), 'image');
+                
+                return response()->json([
+                    'message' => 'Logo uploaded successfully', 
+                    'url' => asset('storage/' . $path)
+                ]);
+            }
+
+            \Log::error('Logo upload failed: Request does not have file "logo"');
+            return response()->json(['error' => 'No file uploaded.'], 400);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Logo upload validation failed: ' . json_encode($e->errors()));
+            return response()->json(['error' => 'Validation failed: ' . implode(', ', \Illuminate\Support\Arr::flatten($e->errors()))], 422);
+        } catch (\Exception $e) {
+            \Log::error('Logo upload unexpected error: ' . $e->getMessage());
+            return response()->json(['error' => 'System error: ' . $e->getMessage()], 500);
         }
-
-        return response()->json(['error' => 'Upload failed'], 400);
     }
 
     public function services()

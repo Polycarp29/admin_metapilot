@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('admin.login');
+    return redirect()->route('admin.dashboard');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

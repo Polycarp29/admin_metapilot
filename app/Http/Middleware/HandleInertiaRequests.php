@@ -40,6 +40,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'branding' => [
+                'name' => \App\Models\SiteConfig::get('site_name', 'Metapilot'),
+                'logo' => \App\Models\SiteConfig::get('site_logo'),
+            ],
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'error' => fn () => $request->session()->get('error'),

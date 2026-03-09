@@ -1,9 +1,10 @@
 
 <script setup> 
 import { ref, onMounted, watch, computed } from 'vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import AdminLayout from '../../Layouts/AdminLayout.vue'
 import axios from 'axios'
+import { useToastStore } from '../../stores/useToastStore'
 
 const props = defineProps({
     stats: Object,
@@ -11,10 +12,13 @@ const props = defineProps({
     tab: { type: String, default: 'overview' }
 })
 
+const page = usePage()
+
 const activeTab = ref(props.tab)
 const searchQuery = ref('')
 const dashboardSearch = ref('')
 const isLoading = ref(false)
+const toastStore = useToastStore()
 
 const filteredActivities = computed(() => {
     if (!dashboardSearch.value) return props.recent_activities
@@ -39,7 +43,10 @@ const invitations = ref({ data: [], current_page: 1, last_page: 1, total: 0 })
 const sitemaps = ref({ data: [], current_page: 1, last_page: 1, total: 0 })
 const schemas = ref({ data: [], current_page: 1, last_page: 1, total: 0 })
 const keywords = ref({ data: [], current_page: 1, last_page: 1, total: 0 })
-const siteConfig = ref({})
+const siteConfig = ref({
+    site_logo: page.props.branding?.logo || '',
+    site_name: page.props.branding?.name || 'Metapilot'
+})
 const servicesData = ref([])
 const logs = ref({ content: '', resource: 'laravel', path: '' })
 
@@ -66,10 +73,10 @@ const addUser = async () => {
         isAddUserModalOpen.value = false
         newUser.value = { name: '', email: '', password: '', is_admin: false }
         fetchData(users.value.current_page)
-        alert('User created successfully.')
+        toastStore.success('User created successfully.', 'User Created')
     } catch (e) {
         console.error('Failed to create user', e)
-        alert(e.response?.data?.message || 'Failed to create user.')
+        toastStore.error(e.response?.data?.message || 'Failed to create user.', 'Error')
     }
 }
 
@@ -79,10 +86,10 @@ const sendInvite = async () => {
         isInviteOrgModalOpen.value = false
         newInvite.value = { email: '', organization_id: '', role: 'member' }
         fetchData(invitations.value.current_page)
-        alert('Invitation sent successfully.')
+        toastStore.success('Invitation sent successfully.', 'Invitation Sent')
     } catch (e) {
         console.error('Failed to send invite', e)
-        alert(e.response?.data?.message || 'Failed to send invite.')
+        toastStore.error(e.response?.data?.message || 'Failed to send invite.', 'Error')
     }
 }
 
@@ -182,7 +189,8 @@ const fetchData = async (page = 1) => {
         if (activeTab.value === 'logs') logs.value = r.data
     } catch (e) {
         console.error('Failed to fetch data for tab: ' + activeTab.value, e)
-        alert('Failed to load ' + activeTab.value + ' data. Check console.')
+        isLoading.value = false
+        toastStore.error('Failed to load ' + activeTab.value + ' data. Check console.', 'Fetch Error')
     } finally {
         isLoading.value = false
     }
@@ -210,7 +218,7 @@ const deleteUser = async (user) => {
 const resetPassword = async (user) => {
     try {
         const r = await axios.post(route('admin.users.reset-password', user.id))
-        alert(`New password for ${user.email}: ${r.data.new_password}`)
+        toastStore.warning(`New password for ${user.email}: ${r.data.new_password}`, 'Password Reset')
     } catch (e) {
         console.error('Failed to reset password', e)
     }
@@ -241,10 +249,10 @@ const stopLogPolling = () => {
 const saveConfig = async () => {
     try {
         await axios.post(route('admin.config.update'), { configs: siteConfig.value })
-        alert('System configurations updated successfully.')
+        toastStore.success('System configurations updated successfully.', 'Branding Sync')
     } catch (e) {
         console.error('Failed to save configs', e)
-        alert('Failed to save configurations.')
+        toastStore.error('Failed to save configurations.', 'Save Error')
     }
 }
 
@@ -256,14 +264,16 @@ const handleLogoUpload = async (event) => {
     formData.append('logo', file)
     
     try {
-        const r = await axios.post(route('admin.config.upload-logo'), formData, {
+        const r = await axios.post(route('admin.config.logo'), formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
         siteConfig.value['site_logo'] = r.data.url
-        alert('Logo uploaded successfully.')
+        
+        toastStore.success('Logo uploaded successfully. It will be updated globally on next refresh.', 'Branding Updated')
     } catch (e) {
         console.error('Logo upload failed', e)
-        alert('Failed to upload logo.')
+        const errorMsg = e.response?.data?.error || 'Failed to upload logo.'
+        toastStore.error(errorMsg, 'Upload Error')
     }
 }
 
